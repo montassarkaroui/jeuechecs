@@ -31,6 +31,9 @@ struct Coup
     Position Arrive;
     int PiecePrise;
     bool BoolPiecePrise;
+    bool Roque;
+    bool GrandRoque;
+    bool PetitRoque;
 };
 
 void UllVersTableau(unsigned long long int Ull, int Tableau[]);

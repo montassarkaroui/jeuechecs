@@ -181,6 +181,15 @@ Echiquier::Echiquier()
         m_ListePiece[i+16]->SetNumero(i+16);
     }
 
+    //Pour le roque
+    m_NombreDeplacementTourBlancGrandRoque = 0;
+    m_NombreDeplacementTourBlancPetitRoque = 0;
+    m_NombreDeplacementRoiBlanc = 0;
+    m_NombreDeplacementTourNoirGrandRoque = 0;
+    m_NombreDeplacementTourNoirPetitRoque = 0;
+    m_NombreDeplacementRoiNoir = 0;
+    //Fin pour le roque
+
     TrouverDeplacement(Blanc);
     TrouverDeplacement(Noir);
     TrouverListeCoup();
@@ -233,11 +242,14 @@ void Echiquier::TrouverListeCoup()
     if (m_CouleurAJouer == Blanc)
     {
         ConversionUllCoup(m_ListeCoup, m_ListePiece[0]->MouvementPossible(m_PieceNoire, m_PieceBlanche)-(m_ListePiece[0]->MouvementPossible(m_PieceNoire, m_PieceBlanche)& m_DeplacementNoir), m_ListePiece[0]->GetPosition());
+        //Pour le roque
+        VerifierRoque();
+        //Fin pour le roque
         for(int i=1; i<16; i++)
         {
             if (m_ListePiece[i]->GetVivante()) ConversionUllCoup(m_ListeCoup, m_ListePiece[i]->MouvementPossible(m_PieceNoire, m_PieceBlanche), m_ListePiece[i]->GetPosition());
         }
-        for(int i=0; i<m_ListeCoup.size(); i++)
+        for(unsigned int i=0; i<m_ListeCoup.size(); i++)
         {
             Bouger(m_ListeCoup[i]);
             if (!m_EchecBlanc)
@@ -250,11 +262,14 @@ void Echiquier::TrouverListeCoup()
     else
     {
         ConversionUllCoup(m_ListeCoup, m_ListePiece[16]->MouvementPossible(m_PieceBlanche, m_PieceNoire)-(m_ListePiece[16]->MouvementPossible(m_PieceBlanche, m_PieceNoire)&m_DeplacementBlanc), m_ListePiece[16]->GetPosition());
+        //Pour le roque
+        VerifierRoque();
+        //Fin Pour le Roque
         for(int i=17; i<32; i++)
         {
             if (m_ListePiece[i]->GetVivante()) ConversionUllCoup(m_ListeCoup, m_ListePiece[i]->MouvementPossible(m_PieceBlanche, m_PieceNoire), m_ListePiece[i]->GetPosition());
         }
-        for(int i=0; i<m_ListeCoup.size(); i++)
+        for(unsigned int i=0; i<m_ListeCoup.size(); i++)
         {
             Bouger(m_ListeCoup[i]);
             if (!m_EchecNoir)
@@ -265,7 +280,7 @@ void Echiquier::TrouverListeCoup()
         }
     }
     m_ListeCoup.clear();
-    for (int i=0; i<ListeCoupFinal.size(); i++)
+    for (unsigned int i=0; i<ListeCoupFinal.size(); i++)
     {
         m_ListeCoup.push_back(ListeCoupFinal[i]);
     }
@@ -276,38 +291,69 @@ void Echiquier::TrouverListeCoup()
 void Echiquier::Bouger(Coup& CoupAJouer)
 {
     ull Un = 1;
-    if (m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne] != NULL)
+    //Pour le Roque
+    if (CoupAJouer.Roque)
     {
-        if (m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->GetCouleur() == Blanc)
+        BougerRoque(CoupAJouer);
+    }
+    else
+    {
+        //Fin Pour le roque
+        if (m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne] != NULL)
         {
-            m_PieceBlanche -= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
+            if (m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->GetCouleur() == Blanc)
+            {
+                m_PieceBlanche -= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
+            }
+            else
+            {
+                m_PieceNoire -= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
+            }
+            CoupAJouer.BoolPiecePrise = true;
+            CoupAJouer.PiecePrise = m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->GetNumero();
+            m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->SetVivante(false);
         }
         else
         {
-            m_PieceNoire -= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
+            CoupAJouer.BoolPiecePrise = false;
         }
-        CoupAJouer.BoolPiecePrise = true;
-        CoupAJouer.PiecePrise = m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->GetNumero();
-        m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->SetVivante(false);
-    }
-    else
-    {
-        CoupAJouer.BoolPiecePrise = false;
-    }
-    m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne] = m_Plateau[CoupAJouer.Depart.Rangee][CoupAJouer.Depart.Colonne];
-    m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->SetPosition(CoupAJouer.Arrive);
-    m_Plateau[CoupAJouer.Depart.Rangee][CoupAJouer.Depart.Colonne] = NULL;
-    if (m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->GetCouleur() == Blanc)
-    {
-        m_PieceBlanche -= (Un << (CoupAJouer.Depart.Rangee*8+CoupAJouer.Depart.Colonne));
-        m_PieceBlanche |= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
-        m_CouleurAJouer = Noir;
-    }
-    else
-    {
-        m_PieceNoire -= (Un << (CoupAJouer.Depart.Rangee*8+CoupAJouer.Depart.Colonne));
-        m_PieceNoire |= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
-        m_CouleurAJouer = Blanc;
+        //Pour le Roque
+        switch (m_Plateau[CoupAJouer.Depart.Rangee][CoupAJouer.Depart.Colonne]->GetNumero())
+        {
+            case 0:
+                m_NombreDeplacementRoiBlanc += 1;
+                break;
+            case 2:
+                m_NombreDeplacementTourBlancGrandRoque += 1;
+                break;
+            case 3:
+                m_NombreDeplacementTourBlancPetitRoque += 1;
+                break;
+            case 16:
+                m_NombreDeplacementRoiNoir += 1;
+                break;
+            case 18:
+                m_NombreDeplacementTourNoirGrandRoque += 1;
+                break;
+            case 19:
+                m_NombreDeplacementTourNoirGrandRoque += 1;
+        }
+        //Fin pour le roque
+        m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne] = m_Plateau[CoupAJouer.Depart.Rangee][CoupAJouer.Depart.Colonne];
+        m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->SetPosition(CoupAJouer.Arrive);
+        m_Plateau[CoupAJouer.Depart.Rangee][CoupAJouer.Depart.Colonne] = NULL;
+        if (m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->GetCouleur() == Blanc)
+        {
+            m_PieceBlanche -= (Un << (CoupAJouer.Depart.Rangee*8+CoupAJouer.Depart.Colonne));
+            m_PieceBlanche |= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
+            m_CouleurAJouer = Noir;
+        }
+        else
+        {
+            m_PieceNoire -= (Un << (CoupAJouer.Depart.Rangee*8+CoupAJouer.Depart.Colonne));
+            m_PieceNoire |= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
+            m_CouleurAJouer = Blanc;
+        }
     }
     TrouverDeplacement(Blanc);
     TrouverDeplacement(Noir);
@@ -315,12 +361,16 @@ void Echiquier::Bouger(Coup& CoupAJouer)
     m_EchecNoir = (((Un << (m_ListePiece[16]->GetPosition().Rangee*8+m_ListePiece[16]->GetPosition().Colonne)) & m_DeplacementBlanc) != 0);
 }
 
-bool Echiquier::VerificationCoup(Coup CoupAVerifier)
+bool Echiquier::VerificationCoup(Coup& CoupAVerifier)
 {
     bool AppartientALaListe = false;
-    for(int i=0; i<m_ListeCoup.size(); i++)
+    for(unsigned int i=0; i<m_ListeCoup.size(); i++)
     {
-        if (CoupAVerifier.Depart.Rangee == m_ListeCoup[i].Depart.Rangee && CoupAVerifier.Depart.Colonne == m_ListeCoup[i].Depart.Colonne && CoupAVerifier.Arrive.Rangee == m_ListeCoup[i].Arrive.Rangee && CoupAVerifier.Arrive.Colonne == m_ListeCoup[i].Arrive.Colonne) AppartientALaListe = true;
+        if (CoupAVerifier.Depart.Rangee == m_ListeCoup[i].Depart.Rangee && CoupAVerifier.Depart.Colonne == m_ListeCoup[i].Depart.Colonne && CoupAVerifier.Arrive.Rangee == m_ListeCoup[i].Arrive.Rangee && CoupAVerifier.Arrive.Colonne == m_ListeCoup[i].Arrive.Colonne)
+        {
+            AppartientALaListe = true;
+            CoupAVerifier = m_ListeCoup[i];
+        }
     }
     return AppartientALaListe;
 }
@@ -344,35 +394,280 @@ bool Echiquier::BougerTotal(Coup CoupAJouer)
 void Echiquier::BougerInverse(Coup CoupAInverser)
 {
     ull Un = 1;
-    m_Plateau[CoupAInverser.Depart.Rangee][CoupAInverser.Depart.Colonne] = m_Plateau[CoupAInverser.Arrive.Rangee][CoupAInverser.Arrive.Colonne];
-    if (CoupAInverser.BoolPiecePrise)
+    if (CoupAInverser.Roque)
     {
-        m_Plateau[CoupAInverser.Arrive.Rangee][CoupAInverser.Arrive.Colonne] = m_ListePiece[CoupAInverser.PiecePrise];
-        m_Plateau[CoupAInverser.Arrive.Rangee][CoupAInverser.Arrive.Colonne]->SetVivante(true);
-        if (m_CouleurAJouer == Blanc) m_PieceBlanche |= (Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
-        else m_PieceNoire |= (Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
+        BougerRoqueInverse(CoupAInverser);
     }
     else
     {
-        m_Plateau[CoupAInverser.Arrive.Rangee][CoupAInverser.Arrive.Colonne] = NULL;
-    }
-    m_Plateau[CoupAInverser.Depart.Rangee][CoupAInverser.Depart.Colonne]->SetPosition(CoupAInverser.Depart);
-    if (m_CouleurAJouer == Blanc)
-    {
-        m_CouleurAJouer = Noir;
-        m_PieceNoire -= (Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
-        m_PieceNoire |= (Un << (CoupAInverser.Depart.Rangee*8+CoupAInverser.Depart.Colonne));
-    }
-    else
-    {
-        m_CouleurAJouer = Blanc;
-        m_PieceBlanche -= (Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
-        m_PieceBlanche |= (Un << (CoupAInverser.Depart.Rangee*8+CoupAInverser.Depart.Colonne));
+        m_Plateau[CoupAInverser.Depart.Rangee][CoupAInverser.Depart.Colonne] = m_Plateau[CoupAInverser.Arrive.Rangee][CoupAInverser.Arrive.Colonne];
+        if (CoupAInverser.BoolPiecePrise)
+        {
+            m_Plateau[CoupAInverser.Arrive.Rangee][CoupAInverser.Arrive.Colonne] = m_ListePiece[CoupAInverser.PiecePrise];
+            m_Plateau[CoupAInverser.Arrive.Rangee][CoupAInverser.Arrive.Colonne]->SetVivante(true);
+            if (m_CouleurAJouer == Blanc) m_PieceBlanche |= (Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
+            else m_PieceNoire |= (Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
+        }
+        else
+        {
+            m_Plateau[CoupAInverser.Arrive.Rangee][CoupAInverser.Arrive.Colonne] = NULL;
+        }
+        //Pour le Roque
+        switch (m_Plateau[CoupAInverser.Depart.Rangee][CoupAInverser.Depart.Colonne]->GetNumero())
+        {
+            case 0:
+                m_NombreDeplacementRoiBlanc -= 1;
+                break;
+            case 2:
+                m_NombreDeplacementTourBlancGrandRoque -= 1;
+                break;
+            case 3:
+                m_NombreDeplacementTourBlancPetitRoque -= 1;
+                break;
+            case 16:
+                m_NombreDeplacementRoiNoir -= 1;
+                break;
+            case 18:
+                m_NombreDeplacementTourNoirGrandRoque -= 1;
+                break;
+            case 19:
+                m_NombreDeplacementTourNoirGrandRoque -= 1;
+        }
+        //Fin pour le roque
+        m_Plateau[CoupAInverser.Depart.Rangee][CoupAInverser.Depart.Colonne]->SetPosition(CoupAInverser.Depart);
+        if (m_CouleurAJouer == Blanc)
+        {
+            m_CouleurAJouer = Noir;
+            m_PieceNoire -= (Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
+            m_PieceNoire |= (Un << (CoupAInverser.Depart.Rangee*8+CoupAInverser.Depart.Colonne));
+        }
+        else
+        {
+            m_CouleurAJouer = Blanc;
+            m_PieceBlanche -= (Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
+            m_PieceBlanche |= (Un << (CoupAInverser.Depart.Rangee*8+CoupAInverser.Depart.Colonne));
+        }
     }
     TrouverDeplacement(Blanc);
     TrouverDeplacement(Noir);
     m_EchecBlanc = (((Un << (m_ListePiece[0]->GetPosition().Rangee*8+m_ListePiece[0]->GetPosition().Colonne)) & m_DeplacementNoir) != 0);
     m_EchecNoir = (((Un << (m_ListePiece[16]->GetPosition().Rangee*8+m_ListePiece[16]->GetPosition().Colonne)) & m_DeplacementBlanc) != 0);
+}
+
+//Méthodes pour le Roque
+
+void Echiquier::VerifierRoque()
+{
+    ull Un = 1;
+    Coup CoupRoque;
+    if (m_CouleurAJouer == Blanc)
+    {
+        if (m_NombreDeplacementRoiBlanc == 0 && !m_EchecBlanc)
+        {
+            if (m_NombreDeplacementTourBlancPetitRoque == 0 && m_Plateau[7][5] == NULL && m_Plateau[7][6] == NULL && ((m_DeplacementNoir & (Un << (7*8+5))) == 0))
+            {
+                CoupRoque.Depart.Rangee = 7;
+                CoupRoque.Depart.Colonne = 4;
+                CoupRoque.Arrive.Rangee = 7;
+                CoupRoque.Arrive.Colonne = 6;
+                CoupRoque.Roque = true;
+                CoupRoque.PetitRoque = true;
+                CoupRoque.GrandRoque = false;
+                m_ListeCoup.push_back(CoupRoque);
+            }
+            if (m_NombreDeplacementTourBlancGrandRoque == 0 && m_Plateau[7][3] == NULL && m_Plateau[7][2] == NULL && m_Plateau[7][1] == NULL && ((m_DeplacementNoir & (Un << (7*8+3))) == 0))
+            {
+                CoupRoque.Depart.Rangee = 7;
+                CoupRoque.Depart.Colonne = 4;
+                CoupRoque.Arrive.Rangee = 7;
+                CoupRoque.Arrive.Colonne = 2;
+                CoupRoque.Roque = true;
+                CoupRoque.PetitRoque = false;
+                CoupRoque.GrandRoque = true;
+                m_ListeCoup.push_back(CoupRoque);
+            }
+        }
+    }
+    else
+    {
+        if (m_NombreDeplacementRoiNoir == 0 && !m_EchecNoir)
+        {
+            if (m_NombreDeplacementTourNoirPetitRoque == 0 && m_Plateau[0][5] == NULL && m_Plateau[0][6] == NULL && ((m_DeplacementBlanc & (Un << (0*8+5))) == 0))
+            {
+                CoupRoque.Depart.Rangee = 0;
+                CoupRoque.Depart.Colonne = 4;
+                CoupRoque.Arrive.Rangee = 0;
+                CoupRoque.Arrive.Colonne = 6;
+                CoupRoque.Roque = true;
+                CoupRoque.PetitRoque = true;
+                CoupRoque.GrandRoque = false;
+                m_ListeCoup.push_back(CoupRoque);
+            }
+            if (m_NombreDeplacementTourNoirGrandRoque == 0 && m_Plateau[0][3] == NULL && m_Plateau[0][2] == NULL && m_Plateau[0][1] == NULL && ((m_DeplacementBlanc & (Un << (0*8+3))) == 0))
+            {
+                CoupRoque.Depart.Rangee = 0;
+                CoupRoque.Depart.Colonne = 4;
+                CoupRoque.Arrive.Rangee = 0;
+                CoupRoque.Arrive.Colonne = 2;
+                CoupRoque.Roque = true;
+                CoupRoque.PetitRoque = false;
+                CoupRoque.GrandRoque = true;
+                m_ListeCoup.push_back(CoupRoque);
+            }
+        }
+    }
+}
+
+void Echiquier::BougerRoque(Coup CoupRoque)
+{
+    ull Un = 1;
+    Position TourRoque;
+    if (m_CouleurAJouer == Blanc)
+    {
+        if (CoupRoque.PetitRoque)
+        {
+            m_CouleurAJouer = Noir;
+            m_PieceBlanche -= ((Un << (7*8+4)) | (Un << (7*8+7)));
+            m_PieceBlanche += ((Un << (7*8+6)) | (Un << (7*8+5)));
+            m_Plateau[7][6] = m_Plateau[7][4];
+            m_Plateau[7][5] = m_Plateau[7][7];
+            m_Plateau[7][4] = NULL;
+            m_Plateau[7][7] = NULL;
+            m_Plateau[7][6]->SetPosition(CoupRoque.Arrive);
+            TourRoque.Rangee = 7;
+            TourRoque.Colonne = 5;
+            m_Plateau[7][5]->SetPosition(TourRoque);
+            m_NombreDeplacementRoiBlanc += 1;
+            m_NombreDeplacementTourBlancPetitRoque += 1;
+        }
+        else
+        {
+            m_CouleurAJouer = Noir;
+            m_PieceBlanche -= ((Un << (7*8+4)) | (Un << (7*8+0)));
+            m_PieceBlanche += ((Un << (7*8+2)) | (Un << (7*8+3)));
+            m_Plateau[7][2] = m_Plateau[7][4];
+            m_Plateau[7][3] = m_Plateau[7][0];
+            m_Plateau[7][4] = NULL;
+            m_Plateau[7][0] = NULL;
+            m_Plateau[7][2]->SetPosition(CoupRoque.Arrive);
+            TourRoque.Rangee = 7;
+            TourRoque.Colonne = 3;
+            m_Plateau[7][3]->SetPosition(TourRoque);
+            m_NombreDeplacementRoiBlanc += 1;
+            m_NombreDeplacementTourBlancGrandRoque += 1;
+        }
+    }
+    else
+    {
+        if (CoupRoque.PetitRoque)
+        {
+            m_CouleurAJouer = Blanc;
+            m_PieceNoire -= ((Un << (0*8+4)) | (Un << (0*8+7)));
+            m_PieceNoire += ((Un << (0*8+6)) | (Un << (0*8+5)));
+            m_Plateau[0][6] = m_Plateau[0][4];
+            m_Plateau[0][5] = m_Plateau[0][7];
+            m_Plateau[0][4] = NULL;
+            m_Plateau[0][7] = NULL;
+            m_Plateau[0][6]->SetPosition(CoupRoque.Arrive);
+            TourRoque.Rangee = 0;
+            TourRoque.Colonne = 5;
+            m_Plateau[0][5]->SetPosition(TourRoque);
+            m_NombreDeplacementRoiNoir += 1;
+            m_NombreDeplacementTourNoirPetitRoque += 1;
+        }
+        else
+        {
+            m_CouleurAJouer = Blanc;
+            m_PieceNoire -= ((Un << (0*8+4)) | (Un << (0*8+0)));
+            m_PieceNoire += ((Un << (0*8+2)) | (Un << (0*8+3)));
+            m_Plateau[0][2] = m_Plateau[0][4];
+            m_Plateau[0][3] = m_Plateau[0][0];
+            m_Plateau[0][4] = NULL;
+            m_Plateau[0][0] = NULL;
+            m_Plateau[0][2]->SetPosition(CoupRoque.Arrive);
+            TourRoque.Rangee = 0;
+            TourRoque.Colonne = 3;
+            m_Plateau[0][3]->SetPosition(TourRoque);
+            m_NombreDeplacementRoiNoir += 1;
+            m_NombreDeplacementTourNoirGrandRoque += 1;
+        }
+    }
+}
+
+void Echiquier::BougerRoqueInverse(Coup CoupRoqueAInverser)
+{
+    ull Un = 1;
+    Position TourRoque;
+    if (m_CouleurAJouer == Noir)
+    {
+        if (CoupRoqueAInverser.PetitRoque)
+        {
+            m_CouleurAJouer = Blanc;
+            m_PieceBlanche += ((Un << (7*8+4)) | (Un << (7*8+7)));
+            m_PieceBlanche -= ((Un << (7*8+6)) | (Un << (7*8+5)));
+            m_Plateau[7][4] = m_Plateau[7][6];
+            m_Plateau[7][7] = m_Plateau[7][5];
+            m_Plateau[7][6] = NULL;
+            m_Plateau[7][5] = NULL;
+            m_Plateau[7][4]->SetPosition(CoupRoqueAInverser.Depart);
+            TourRoque.Rangee = 7;
+            TourRoque.Colonne = 7;
+            m_Plateau[7][7]->SetPosition(TourRoque);
+            m_NombreDeplacementRoiBlanc -= 1;
+            m_NombreDeplacementTourBlancPetitRoque -= 1;
+        }
+        else
+        {
+            m_CouleurAJouer = Blanc;
+            m_PieceBlanche += ((Un << (7*8+4)) | (Un << (7*8+0)));
+            m_PieceBlanche -= ((Un << (7*8+2)) | (Un << (7*8+3)));
+            m_Plateau[7][4] = m_Plateau[7][2];
+            m_Plateau[7][0] = m_Plateau[7][3];
+            m_Plateau[7][2] = NULL;
+            m_Plateau[7][3] = NULL;
+            m_Plateau[7][4]->SetPosition(CoupRoqueAInverser.Depart);
+            TourRoque.Rangee = 7;
+            TourRoque.Colonne = 0;
+            m_Plateau[7][0]->SetPosition(TourRoque);
+            m_NombreDeplacementRoiBlanc -= 1;
+            m_NombreDeplacementTourBlancGrandRoque -= 1;
+        }
+    }
+    else
+    {
+        if (CoupRoqueAInverser.PetitRoque)
+        {
+            m_CouleurAJouer = Noir;
+            m_PieceNoire += ((Un << (0*8+4)) | (Un << (0*8+7)));
+            m_PieceNoire -= ((Un << (0*8+6)) | (Un << (0*8+5)));
+            m_Plateau[0][4] = m_Plateau[0][6];
+            m_Plateau[0][7] = m_Plateau[0][5];
+            m_Plateau[0][6] = NULL;
+            m_Plateau[0][5] = NULL;
+            m_Plateau[0][4]->SetPosition(CoupRoqueAInverser.Depart);
+            TourRoque.Rangee = 0;
+            TourRoque.Colonne = 7;
+            m_Plateau[0][7]->SetPosition(TourRoque);
+            m_NombreDeplacementRoiNoir -= 1;
+            m_NombreDeplacementTourNoirPetitRoque -= 1;
+        }
+        else
+        {
+            m_CouleurAJouer = Noir;
+            m_PieceNoire += ((Un << (0*8+4)) | (Un << (0*8+0)));
+            m_PieceNoire -= ((Un << (0*8+2)) | (Un << (0*8+3)));
+            m_Plateau[0][4] = m_Plateau[0][2];
+            m_Plateau[0][0] = m_Plateau[0][3];
+            m_Plateau[0][2] = NULL;
+            m_Plateau[0][3] = NULL;
+            m_Plateau[0][4]->SetPosition(CoupRoqueAInverser.Depart);
+            TourRoque.Rangee = 0;
+            TourRoque.Colonne = 0;
+            m_Plateau[0][0]->SetPosition(TourRoque);
+            m_NombreDeplacementRoiNoir -= 1;
+            m_NombreDeplacementTourNoirGrandRoque -= 1;
+        }
+    }
 }
 
 //Méthode pour l'affichage

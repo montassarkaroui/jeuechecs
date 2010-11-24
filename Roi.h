@@ -6,16 +6,18 @@
 
 class Roi : public Piece
 {
-    private:
-
-    int m_NombreDeplacementTourGrandRoque;
-    int m_NombreDeplacementTourPetitRoque;
-    int m_NombreDeplacementRoi;
-    bool m_Echec;
-
     public:
 
+    //Constructeur
     Roi(Position Case, Couleur CouleurPiece);
+
+    //Getteur et Setteur
+    int GetNombreDeplacementTourGrandRoque();
+    int GetNombreDeplacementTourPetitRoque();
+    int GetNombreDeplacementRoi();
+    void SetNombreDeplacementTourGrandRoque(unsigned int Nombre);
+    void SetNombreDeplacementTourPetitRoque(unsigned int Nombre);
+    void SetNombreDeplacementTourRoi(unsigned int Nombre);
     ull MouvementPossible(ull PieceAdverse, ull PieceAmi);
 
 };
