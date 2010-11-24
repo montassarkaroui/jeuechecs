@@ -22,6 +22,14 @@ Couleur m_CouleurAJouer;
 bool m_Fin;
 vector<Coup> m_ListeCoup;
 
+//Attribut pour le roque
+    int m_NombreDeplacementTourBlancGrandRoque;
+    int m_NombreDeplacementTourBlancPetitRoque;
+    int m_NombreDeplacementRoiBlanc;
+    int m_NombreDeplacementTourNoirGrandRoque;
+    int m_NombreDeplacementTourNoirPetitRoque;
+    int m_NombreDeplacementRoiNoir;
+
 public:
 
 //Constructeur & Destructeur
@@ -36,12 +44,17 @@ vector<Coup> GetListeCoup();
 void TrouverDeplacement(Couleur CouleurAJouer);
 void TrouverListeCoup();
 void Bouger(Coup& CoupAJouer);
-bool VerificationCoup(Coup CoupAVerifier);
+bool VerificationCoup(Coup& CoupAVerifier);
 bool BougerTotal(Coup CoupAJouer);
 void BougerInverse(Coup CoupAInverser);
 
+//Méthodes pour le Roque;
+void VerifierRoque();
+
 //Méthode pour l'affichage
 void Affichage();
+void BougerRoque(Coup CoupRoque);
+void BougerRoqueInverse(Coup CoupRoqueAInverser);
 
 //Pour le débugage
 ull DeplacementPossible(int i);

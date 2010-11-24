@@ -47,6 +47,7 @@ void ConversionUllCoup(vector<Coup> &ListeCoup, ull Masque, Position PositionDeL
             Case.Depart = PositionDeLaPiece;
             Case.Arrive.Rangee = i/8;
             Case.Arrive.Colonne = i%8;
+            Case.Roque = false;
             ListeCoup.push_back(Case);
             Masque -= (Un << i);
         }
