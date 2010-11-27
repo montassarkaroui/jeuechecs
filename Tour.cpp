@@ -7,6 +7,7 @@ Tour::Tour(Position Case, Couleur CouleurPiece): Piece()
 m_Position = Case;
 m_CouleurPiece = CouleurPiece;
 m_TypePiece = TypeFou;
+m_Valeur = ValeurTour;
 
 if (CouleurPiece == Blanc)
 {

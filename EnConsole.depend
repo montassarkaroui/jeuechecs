@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1290101564 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Cavalier.cpp
+1290865114 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Cavalier.cpp
 	"Cavalier.h"
 	"structure.h"
 	"piece.h"
@@ -9,16 +9,18 @@
 	"piece.h"
 	"structure.h"
 
-1290419374 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/piece.h
+1290636817 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/piece.h
 	"structure.h"
 	<string>
 
-1290548802 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/structure.h
+1290869669 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/structure.h
 	<math.h>
 	<iostream>
 	<vector>
+	<string>
+	<sstream>
 
-1290104963 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Dame.cpp
+1290637078 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Dame.cpp
 	"Dame.h"
 	"structure.h"
 	<string>
@@ -27,7 +29,7 @@
 	"piece.h"
 	"structure.h"
 
-1290103746 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Fou.cpp
+1290637078 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Fou.cpp
 	"Fou.h"
 	"structure.h"
 	<string>
@@ -36,7 +38,7 @@
 	"piece.h"
 	"structure.h"
 
-1290100325 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Pion.cpp
+1290637077 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Pion.cpp
 	"Pion.h"
 	"structure.h"
 	<string>
@@ -45,7 +47,7 @@
 	"piece.h"
 	"structure.h"
 
-1290626622 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Roi.cpp
+1290864966 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Roi.cpp
 	"Roi.h"
 	"structure.h"
 	<string>
@@ -56,7 +58,7 @@
 	"piece.h"
 	"structure.h"
 
-1290626567 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/echiquier.cpp
+1290870026 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/echiquier.cpp
 	"structure.h"
 	"piece.h"
 	"echiquier.h"
@@ -71,13 +73,15 @@
 	<math.h>
 	<vector>
 	<stdlib.h>
+	<fstream>
+	<string>
 
-1290625652 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/echiquier.h
+1290865845 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/echiquier.h
 	"piece.h"
 	"Roi.h"
 	<vector>
 
-1290625838 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/main.cpp
+1290869997 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/main.cpp
 	<iostream>
 	<math.h>
 	"structure.h"
@@ -86,27 +90,31 @@
 	"echiquier.h"
 	"Humain.h"
 	"Aleatoire.h"
+	"Elagage.h"
 	"time.h"
 	<stdlib.h>
 
-1290419417 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/piece.cpp
+1290636817 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/piece.cpp
 	"piece.h"
 	"structure.h"
 	<string>
 
-1290548229 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/structure.cpp
+1290869724 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/structure.cpp
 	"structure.h"
 	<iostream>
 	<math.h>
 	<stdlib.h>
 	<vector>
+	<string>
+	<fstream>
+	<sstream>
 
 1288224015 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/piece.cpp
 	"piece.h"
 	"structure.h"
 	<string>
 
-1290103883 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Tour.cpp
+1290637078 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Tour.cpp
 	"Tour.h"
 	"structure.h"
 	<string>
@@ -115,7 +123,7 @@
 	"piece.h"
 	"structure.h"
 
-1290625515 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Humain.cpp
+1290626632 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Humain.cpp
 	"echiquier.h"
 	"structure.h"
 	"Humain.h"
@@ -125,7 +133,7 @@
 	"structure.h"
 	"Joueur.h"
 
-1290358461 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Joueur.h
+1290711644 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Joueur.h
 	"echiquier.h"
 	"structure.h"
 
@@ -137,6 +145,30 @@
 	<stdlib.h>
 
 1290360402 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Aleatoire.h
+	"echiquier.h"
+	"structure.h"
+	"Joueur.h"
+
+1290803775 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Eval.cpp
+	"Eval.h"
+	"structure.h"
+	"echiquier.h"
+	"piece.h"
+
+1290637111 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Eval.h
+	"structure.h"
+	"echiquier.h"
+	"piece.h"
+
+1290812293 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Elagage.cpp
+	"echiquier.h"
+	"structure.h"
+	"Elagage.h"
+	"Eval.h"
+	<vector>
+	<iostream>
+
+1290712426 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Elagage.h
 	"echiquier.h"
 	"structure.h"
 	"Joueur.h"

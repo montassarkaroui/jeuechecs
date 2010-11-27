@@ -41,6 +41,8 @@ int Piece::GetNumero()
     return m_Numero;
 }
 
+double Piece::GetValeur() { return m_Valeur; }
+
 void Piece::SetVivante(bool Valeur)
 {
     m_Vivante = Valeur;

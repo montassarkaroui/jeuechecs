@@ -10,9 +10,7 @@ Roi::Roi(Position Case, Couleur CouleurPiece) : Piece()
     m_Position = Case;
     m_CouleurPiece = CouleurPiece;
     m_TypePiece = TypeRoi;
-//    m_NombreDeplacementTourGrandRoque = 0;
-//    m_NombreDeplacementTourPetitRoque = 0;
-//    m_NombreDeplacementRoi = 0;
+    m_Valeur = ValeurRoi;
 
 if (CouleurPiece == Blanc)
 {
@@ -42,9 +40,5 @@ ull Roi::MouvementPossible(ull PieceAdverse, ull PieceAmi)
         default:
             MasqueMouvementPossible |= (PositionActuelle << 7 | PositionActuelle << 9 | PositionActuelle >> 7 | PositionActuelle >> 9 | PositionActuelle >> 1 | PositionActuelle << 1);
     }
-//    if (m_NombreDeplacementRoi == 0)
-//    {
-//        if (m_NombreDeplacementTourPetitRoque == 0 && (((PositionActuelle << 1) & PieceAmi & PieceAdverse) == 0) && (((PositionActuelle << 2) & PieceAmi & PieceAdverse) == 0) && !m_Echec) MasqueMouvementPossible |= PositionActuelle << 2;
-//    }
-    return MasqueMouvementPossible - (MasqueMouvementPossible & PieceAmi);
+    return MasqueMouvementPossible & ~(MasqueMouvementPossible & PieceAmi);
 }

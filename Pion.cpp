@@ -7,6 +7,7 @@ Pion::Pion(Position Case, Couleur CouleurPiece) : Piece()
 m_Position = Case;
 m_CouleurPiece = CouleurPiece;
 m_TypePiece = TypeTour;
+m_Valeur = ValeurPion;
 
 if (CouleurPiece == Blanc)
 {

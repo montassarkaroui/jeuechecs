@@ -7,6 +7,7 @@ Dame::Dame(Position Case, Couleur CouleurPiece) : Piece()
 m_Position = Case;
 m_CouleurPiece = CouleurPiece;
 m_TypePiece = TypeDame;
+m_Valeur = ValeurDame;
 
 
 if (CouleurPiece == Blanc)

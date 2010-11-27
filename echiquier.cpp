@@ -12,6 +12,8 @@
 #include <math.h>
 #include <vector>
 #include <stdlib.h>
+#include <fstream>
+#include <string>
 using namespace std;
 
 
@@ -19,8 +21,6 @@ Echiquier::Echiquier()
 {
     Position Case;
     ull Un = 1;
-
-    m_Fin = false;
 
     // Initialisation des pointeurs des pièce à NULL
     for(int i=0; i<32; i++)
@@ -170,6 +170,8 @@ Echiquier::Echiquier()
     m_CouleurAJouer = Blanc;
     m_EchecBlanc = false;
     m_EchecNoir =  false;
+    m_EchecEtMat = false;
+    m_Fin = false;
 
     m_PieceBlanche = 0;
     m_PieceNoire = 0;
@@ -202,6 +204,8 @@ bool Echiquier::GetFin()
     return m_Fin;
 }
 
+bool Echiquier::GetEchecEtMat() { return m_EchecEtMat; }
+
 Couleur Echiquier::GetCouleurAJouer()
 {
     return m_CouleurAJouer;
@@ -211,6 +215,17 @@ vector<Coup> Echiquier::GetListeCoup()
 {
     return m_ListeCoup;
 }
+
+void Echiquier::GetListeCoup(vector<Coup>& ListeCoup)
+{
+    ListeCoup.clear();
+    for(unsigned int i=0; i<m_ListeCoup.size(); i++)
+    {
+        ListeCoup.push_back(m_ListeCoup[i]);
+    }
+}
+
+Piece* Echiquier::GetListePiece(int i, int j) { return m_Plateau[i][j]; }
 
 //Méthodes pour le déplacement
 
@@ -285,7 +300,11 @@ void Echiquier::TrouverListeCoup()
         m_ListeCoup.push_back(ListeCoupFinal[i]);
     }
     ListeCoupFinal.clear();
-    if (m_ListeCoup.size() == 0) m_Fin = true;
+    if (m_ListeCoup.size() == 0)
+    {
+        m_Fin = true;
+        if (m_EchecNoir || m_EchecBlanc) { m_EchecEtMat = true; }
+    }
 }
 
 void Echiquier::Bouger(Coup& CoupAJouer)
@@ -452,6 +471,8 @@ void Echiquier::BougerInverse(Coup CoupAInverser)
     TrouverDeplacement(Noir);
     m_EchecBlanc = (((Un << (m_ListePiece[0]->GetPosition().Rangee*8+m_ListePiece[0]->GetPosition().Colonne)) & m_DeplacementNoir) != 0);
     m_EchecNoir = (((Un << (m_ListePiece[16]->GetPosition().Rangee*8+m_ListePiece[16]->GetPosition().Colonne)) & m_DeplacementBlanc) != 0);
+    m_Fin = false;
+    m_EchecEtMat = false;
 }
 
 //Méthodes pour le Roque
@@ -675,11 +696,8 @@ void Echiquier::BougerRoqueInverse(Coup CoupRoqueAInverser)
 void Echiquier::Affichage()
 {
     system("clear");
-//    AffichageUll(m_PieceBlanche);
-//    AffichageUll(m_PieceNoire);
-//    AffichageUll(m_ListePiece[0]->MouvementPossible(m_PieceNoire, m_PieceBlanche));
-//    AffichageUll(m_ListePiece[16]->MouvementPossible(m_PieceBlanche, m_PieceNoire));
-//    AffichageUll(m_DeplacementBlanc);
+
+    cout << endl;
     for(int i=0; i<8; i++)
     {
         cout << i*-1+8 << " ";
@@ -718,9 +736,54 @@ ull Echiquier::DeplacementPossible(int i)
 
 void Echiquier::AffichageCoup(int i)
 {
-    //int i = 0;
     cout << m_ListeCoup[i].Depart.Rangee << endl;
     cout << m_ListeCoup[i].Depart.Colonne << endl;
     cout << m_ListeCoup[i].Arrive.Rangee << endl;
     cout << m_ListeCoup[i].Arrive.Colonne << endl;
+}
+
+void Echiquier::CreationFichierDebugage()
+{
+    string NomFichierBlanc = "DebugBlanc";
+    string NomFichierNoir = "DebugNoir";
+    string Numero;
+    ull DeplacementRoi;
+
+    if (m_CouleurAJouer == Blanc)
+    {
+        ofstream FichierBlanc(NomFichierBlanc.c_str(), ios::out | ios::trunc);
+        FichierBlanc.close();
+
+        EcritureFichierUll(m_PieceBlanche, NomFichierBlanc, "PieceBlanche");
+        EcritureFichierUll(m_PieceNoire, NomFichierBlanc, "PieceNoire");
+        EcritureFichierUll(m_DeplacementBlanc, NomFichierBlanc, "DeplacementBlanc");
+        EcritureFichierUll(m_DeplacementNoir, NomFichierBlanc, "DeplacementNoir");
+
+        DeplacementRoi =  m_ListePiece[0]->MouvementPossible(m_PieceNoire, m_PieceBlanche);
+        EcritureFichierUll(DeplacementRoi & ~(DeplacementRoi & m_DeplacementNoir), NomFichierBlanc, "Roi");
+
+        for(int i=1; i<16; i++)
+        {
+            EcritureFichierUll(m_ListePiece[i]->MouvementPossible(m_PieceNoire, m_PieceBlanche), NomFichierBlanc, ConversionIntString(i));
+        }
+    }
+    else
+    {
+        ofstream FichierNoir(NomFichierNoir.c_str(), ios::out | ios::trunc);
+        FichierNoir.close();
+
+        EcritureFichierUll(m_PieceBlanche, NomFichierNoir, "PieceBlanche");
+        EcritureFichierUll(m_PieceNoire, NomFichierNoir, "PieceNoire");
+        EcritureFichierUll(m_DeplacementBlanc, NomFichierNoir, "DeplacementBlanc");
+        EcritureFichierUll(m_DeplacementNoir, NomFichierNoir, "DeplacementNoir");
+
+        DeplacementRoi =  m_ListePiece[16]->MouvementPossible(m_PieceBlanche, m_PieceNoire);
+        EcritureFichierUll(DeplacementRoi & ~(DeplacementRoi & m_DeplacementBlanc), NomFichierNoir, "Roi");
+
+        for(int i=17; i<32; i++)
+        {
+            EcritureFichierUll(m_ListePiece[i]->MouvementPossible(m_PieceBlanche, m_PieceNoire), NomFichierNoir, ConversionIntString(i));
+        }
+    }
+
 }

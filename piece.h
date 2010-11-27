@@ -16,6 +16,7 @@ Couleur m_CouleurPiece;
 bool m_Vivante;
 string m_Symbole;
 int m_Numero;
+double m_Valeur;
 
 public:
 
@@ -30,6 +31,7 @@ Couleur GetCouleur();
 bool GetVivante();
 void SetVivante(bool Valeur);
 int GetNumero();
+double GetValeur();
 void SetPosition(Position PositionPiece);
 void SetNumero(int Numero);
 
