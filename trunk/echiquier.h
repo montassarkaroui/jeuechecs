@@ -16,12 +16,16 @@ ull m_PieceBlanche;
 ull m_PieceNoire;
 ull m_DeplacementBlanc;
 ull m_DeplacementNoir;
+
+Couleur m_CouleurAJouer;
+
+vector<Coup> m_ListeCoup;
+ull* m_Deplacement[32];
+
 bool m_EchecBlanc;
 bool m_EchecNoir;
-Couleur m_CouleurAJouer;
+bool m_EchecEtMat;
 bool m_Fin;
-vector<Coup> m_ListeCoup;
-
 //Attribut pour le roque
     int m_NombreDeplacementTourBlancGrandRoque;
     int m_NombreDeplacementTourBlancPetitRoque;
@@ -37,8 +41,11 @@ Echiquier();
 
 //Getteurs et Setteurs
 bool GetFin();
+bool GetEchecEtMat();
 Couleur GetCouleurAJouer();
 vector<Coup> GetListeCoup();
+void GetListeCoup(vector<Coup>& ListeCoup);
+Piece* GetListePiece(int i, int j);
 
 //Méthodes pour le déplacement
 void TrouverDeplacement(Couleur CouleurAJouer);
@@ -50,15 +57,16 @@ void BougerInverse(Coup CoupAInverser);
 
 //Méthodes pour le Roque;
 void VerifierRoque();
+void BougerRoque(Coup CoupRoque);
+void BougerRoqueInverse(Coup CoupRoqueAInverser);
 
 //Méthode pour l'affichage
 void Affichage();
-void BougerRoque(Coup CoupRoque);
-void BougerRoqueInverse(Coup CoupRoqueAInverser);
 
 //Pour le débugage
 ull DeplacementPossible(int i);
 void AffichageCoup(int i);
+void CreationFichierDebugage();
 
 };
 #endif

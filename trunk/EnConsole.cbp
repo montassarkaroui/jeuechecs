@@ -12,6 +12,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-O3" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -38,6 +39,10 @@
 		<Unit filename="Cavalier.h" />
 		<Unit filename="Dame.cpp" />
 		<Unit filename="Dame.h" />
+		<Unit filename="Elagage.cpp" />
+		<Unit filename="Elagage.h" />
+		<Unit filename="Eval.cpp" />
+		<Unit filename="Eval.h" />
 		<Unit filename="Fou.cpp" />
 		<Unit filename="Fou.h" />
 		<Unit filename="Humain.cpp" />

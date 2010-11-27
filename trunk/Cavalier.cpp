@@ -8,10 +8,9 @@ Cavalier::Cavalier(Position Case, Couleur CouleurPiece) : Piece()
 {
 m_Position = Case;
 m_CouleurPiece = CouleurPiece;
-//m_Position = Position;
 m_TypePiece = TypeCavalier;
-//m_CouleurPiece = CouleurPiece;
-//m_Vivante = true;
+m_Valeur = ValeurCavalier;
+
 
 if (CouleurPiece == Blanc)
 {
@@ -46,5 +45,5 @@ ull Cavalier::MouvementPossible(ull PieceAdverse, ull PieceAmi)
         default:
             MasqueMouvementPossible |= PositionActuelle << (2*8+1) | PositionActuelle << (1*8+2) | PositionActuelle << (2*8-1) | PositionActuelle << (1*8-2) | PositionActuelle >> (2*8+1) | PositionActuelle >> (1*8+2) | PositionActuelle >> (2*8-1) | PositionActuelle >> (1*8-2);
     }
-    return MasqueMouvementPossible-(MasqueMouvementPossible & PieceAmi);
+    return MasqueMouvementPossible & ~(MasqueMouvementPossible & PieceAmi);
 }

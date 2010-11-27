@@ -7,6 +7,7 @@ Fou::Fou(Position Case, Couleur CouleurPiece): Piece()
 m_Position = Case;
 m_CouleurPiece = CouleurPiece;
 m_TypePiece = TypeFou;
+m_Valeur = ValeurFou;
 
 if (CouleurPiece == Blanc)
 {

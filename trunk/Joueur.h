@@ -6,6 +6,10 @@
 
 class Joueur
 {
+    protected:
+
+    int m_Niveau;
+
     public:
 
     Coup TrouverCoupAJouer(Echiquier& Plateau, Couleur CouleurAJouer);
