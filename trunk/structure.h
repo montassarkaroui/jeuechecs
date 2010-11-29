@@ -56,7 +56,7 @@ struct CoupEval
     double Evaluation;
 };
 
-std::string ConversionIntString( int i );
+std::string ConversionIntString(int i);
 void UllVersTableau(unsigned long long int Ull, int Tableau[]);
 void AffichageUll(unsigned long long int ull);
 void ConversionUllCoup(vector<Coup> &ListeCoup, ull Masque, Position PositionDeLaPiece);

@@ -20,7 +20,7 @@ ull m_DeplacementNoir;
 Couleur m_CouleurAJouer;
 
 vector<Coup> m_ListeCoup;
-ull* m_Deplacement[32];
+ull m_DeplacementPiece[32];
 
 bool m_EchecBlanc;
 bool m_EchecNoir;

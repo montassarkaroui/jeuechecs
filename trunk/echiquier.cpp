@@ -199,22 +199,13 @@ Echiquier::Echiquier()
 
 //Getteurs et Setteurs
 
-bool Echiquier::GetFin()
-{
-    return m_Fin;
-}
+bool Echiquier::GetFin() { return m_Fin; }
 
 bool Echiquier::GetEchecEtMat() { return m_EchecEtMat; }
 
-Couleur Echiquier::GetCouleurAJouer()
-{
-    return m_CouleurAJouer;
-}
+Couleur Echiquier::GetCouleurAJouer() { return m_CouleurAJouer; }
 
-vector<Coup> Echiquier::GetListeCoup()
-{
-    return m_ListeCoup;
-}
+vector<Coup> Echiquier::GetListeCoup() { return m_ListeCoup; }
 
 void Echiquier::GetListeCoup(vector<Coup>& ListeCoup)
 {
@@ -236,7 +227,9 @@ void Echiquier::TrouverDeplacement(Couleur CouleurAJouer)
         m_DeplacementBlanc = 0;
         for(int i=0; i<16; i++)
         {
-            if (m_ListePiece[i]->GetVivante()) m_DeplacementBlanc |= m_ListePiece[i]->MouvementPossible(m_PieceNoire, m_PieceBlanche);
+            if (m_ListePiece[i]->GetVivante()) { m_DeplacementPiece[i] = m_ListePiece[i]->MouvementPossible(m_PieceNoire, m_PieceBlanche); }
+            else { m_DeplacementPiece[i] = 0; }
+            m_DeplacementBlanc |= m_DeplacementPiece[i];
         }
     }
     else
@@ -244,7 +237,9 @@ void Echiquier::TrouverDeplacement(Couleur CouleurAJouer)
         m_DeplacementNoir = 0;
         for(int i=16; i<32; i++)
         {
-            if (m_ListePiece[i]->GetVivante()) m_DeplacementNoir |= m_ListePiece[i]->MouvementPossible(m_PieceBlanche, m_PieceNoire);
+            if (m_ListePiece[i]->GetVivante()) { m_DeplacementPiece[i] = m_ListePiece[i]->MouvementPossible(m_PieceBlanche, m_PieceNoire); }
+            else { m_DeplacementPiece[i] = 0; }
+            m_DeplacementNoir |= m_DeplacementPiece[i];
         }
     }
 }
@@ -256,13 +251,13 @@ void Echiquier::TrouverListeCoup()
     m_ListeCoup.clear();
     if (m_CouleurAJouer == Blanc)
     {
-        ConversionUllCoup(m_ListeCoup, m_ListePiece[0]->MouvementPossible(m_PieceNoire, m_PieceBlanche)-(m_ListePiece[0]->MouvementPossible(m_PieceNoire, m_PieceBlanche)& m_DeplacementNoir), m_ListePiece[0]->GetPosition());
+        ConversionUllCoup(m_ListeCoup, m_DeplacementPiece[0] & ~(m_DeplacementPiece[0] & m_DeplacementNoir), m_ListePiece[0]->GetPosition());
         //Pour le roque
         VerifierRoque();
         //Fin pour le roque
         for(int i=1; i<16; i++)
         {
-            if (m_ListePiece[i]->GetVivante()) ConversionUllCoup(m_ListeCoup, m_ListePiece[i]->MouvementPossible(m_PieceNoire, m_PieceBlanche), m_ListePiece[i]->GetPosition());
+            if (m_ListePiece[i]->GetVivante()) ConversionUllCoup(m_ListeCoup, m_DeplacementPiece[i], m_ListePiece[i]->GetPosition());
         }
         for(unsigned int i=0; i<m_ListeCoup.size(); i++)
         {
@@ -276,13 +271,13 @@ void Echiquier::TrouverListeCoup()
     }
     else
     {
-        ConversionUllCoup(m_ListeCoup, m_ListePiece[16]->MouvementPossible(m_PieceBlanche, m_PieceNoire)-(m_ListePiece[16]->MouvementPossible(m_PieceBlanche, m_PieceNoire)&m_DeplacementBlanc), m_ListePiece[16]->GetPosition());
+        ConversionUllCoup(m_ListeCoup, m_DeplacementPiece[16] & ~(m_DeplacementPiece[16] & m_DeplacementBlanc), m_ListePiece[16]->GetPosition());
         //Pour le roque
         VerifierRoque();
         //Fin Pour le Roque
         for(int i=17; i<32; i++)
         {
-            if (m_ListePiece[i]->GetVivante()) ConversionUllCoup(m_ListeCoup, m_ListePiece[i]->MouvementPossible(m_PieceBlanche, m_PieceNoire), m_ListePiece[i]->GetPosition());
+            if (m_ListePiece[i]->GetVivante()) ConversionUllCoup(m_ListeCoup, m_DeplacementPiece[i], m_ListePiece[i]->GetPosition());
         }
         for(unsigned int i=0; i<m_ListeCoup.size(); i++)
         {
@@ -322,11 +317,11 @@ void Echiquier::Bouger(Coup& CoupAJouer)
         {
             if (m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->GetCouleur() == Blanc)
             {
-                m_PieceBlanche -= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
+                m_PieceBlanche &= ~(Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
             }
             else
             {
-                m_PieceNoire -= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
+                m_PieceNoire &= ~(Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
             }
             CoupAJouer.BoolPiecePrise = true;
             CoupAJouer.PiecePrise = m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->GetNumero();
@@ -363,13 +358,13 @@ void Echiquier::Bouger(Coup& CoupAJouer)
         m_Plateau[CoupAJouer.Depart.Rangee][CoupAJouer.Depart.Colonne] = NULL;
         if (m_Plateau[CoupAJouer.Arrive.Rangee][CoupAJouer.Arrive.Colonne]->GetCouleur() == Blanc)
         {
-            m_PieceBlanche -= (Un << (CoupAJouer.Depart.Rangee*8+CoupAJouer.Depart.Colonne));
+            m_PieceBlanche &= ~(Un << (CoupAJouer.Depart.Rangee*8+CoupAJouer.Depart.Colonne));
             m_PieceBlanche |= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
             m_CouleurAJouer = Noir;
         }
         else
         {
-            m_PieceNoire -= (Un << (CoupAJouer.Depart.Rangee*8+CoupAJouer.Depart.Colonne));
+            m_PieceNoire &= ~(Un << (CoupAJouer.Depart.Rangee*8+CoupAJouer.Depart.Colonne));
             m_PieceNoire |= (Un << (CoupAJouer.Arrive.Rangee*8+CoupAJouer.Arrive.Colonne));
             m_CouleurAJouer = Blanc;
         }
@@ -457,13 +452,13 @@ void Echiquier::BougerInverse(Coup CoupAInverser)
         if (m_CouleurAJouer == Blanc)
         {
             m_CouleurAJouer = Noir;
-            m_PieceNoire -= (Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
+            m_PieceNoire &= ~(Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
             m_PieceNoire |= (Un << (CoupAInverser.Depart.Rangee*8+CoupAInverser.Depart.Colonne));
         }
         else
         {
             m_CouleurAJouer = Blanc;
-            m_PieceBlanche -= (Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
+            m_PieceBlanche &= ~(Un << (CoupAInverser.Arrive.Rangee*8+CoupAInverser.Arrive.Colonne));
             m_PieceBlanche |= (Un << (CoupAInverser.Depart.Rangee*8+CoupAInverser.Depart.Colonne));
         }
     }
@@ -548,8 +543,8 @@ void Echiquier::BougerRoque(Coup CoupRoque)
         if (CoupRoque.PetitRoque)
         {
             m_CouleurAJouer = Noir;
-            m_PieceBlanche -= ((Un << (7*8+4)) | (Un << (7*8+7)));
-            m_PieceBlanche += ((Un << (7*8+6)) | (Un << (7*8+5)));
+            m_PieceBlanche &= ~((Un << (7*8+4)) | (Un << (7*8+7)));
+            m_PieceBlanche |= ((Un << (7*8+6)) | (Un << (7*8+5)));
             m_Plateau[7][6] = m_Plateau[7][4];
             m_Plateau[7][5] = m_Plateau[7][7];
             m_Plateau[7][4] = NULL;
@@ -564,8 +559,8 @@ void Echiquier::BougerRoque(Coup CoupRoque)
         else
         {
             m_CouleurAJouer = Noir;
-            m_PieceBlanche -= ((Un << (7*8+4)) | (Un << (7*8+0)));
-            m_PieceBlanche += ((Un << (7*8+2)) | (Un << (7*8+3)));
+            m_PieceBlanche &= ~((Un << (7*8+4)) | (Un << (7*8+0)));
+            m_PieceBlanche |= ((Un << (7*8+2)) | (Un << (7*8+3)));
             m_Plateau[7][2] = m_Plateau[7][4];
             m_Plateau[7][3] = m_Plateau[7][0];
             m_Plateau[7][4] = NULL;
@@ -583,8 +578,8 @@ void Echiquier::BougerRoque(Coup CoupRoque)
         if (CoupRoque.PetitRoque)
         {
             m_CouleurAJouer = Blanc;
-            m_PieceNoire -= ((Un << (0*8+4)) | (Un << (0*8+7)));
-            m_PieceNoire += ((Un << (0*8+6)) | (Un << (0*8+5)));
+            m_PieceNoire &= ~((Un << (0*8+4)) | (Un << (0*8+7)));
+            m_PieceNoire |= ((Un << (0*8+6)) | (Un << (0*8+5)));
             m_Plateau[0][6] = m_Plateau[0][4];
             m_Plateau[0][5] = m_Plateau[0][7];
             m_Plateau[0][4] = NULL;
@@ -599,8 +594,8 @@ void Echiquier::BougerRoque(Coup CoupRoque)
         else
         {
             m_CouleurAJouer = Blanc;
-            m_PieceNoire -= ((Un << (0*8+4)) | (Un << (0*8+0)));
-            m_PieceNoire += ((Un << (0*8+2)) | (Un << (0*8+3)));
+            m_PieceNoire &= ~((Un << (0*8+4)) | (Un << (0*8+0)));
+            m_PieceNoire |= ((Un << (0*8+2)) | (Un << (0*8+3)));
             m_Plateau[0][2] = m_Plateau[0][4];
             m_Plateau[0][3] = m_Plateau[0][0];
             m_Plateau[0][4] = NULL;
@@ -624,8 +619,8 @@ void Echiquier::BougerRoqueInverse(Coup CoupRoqueAInverser)
         if (CoupRoqueAInverser.PetitRoque)
         {
             m_CouleurAJouer = Blanc;
-            m_PieceBlanche += ((Un << (7*8+4)) | (Un << (7*8+7)));
-            m_PieceBlanche -= ((Un << (7*8+6)) | (Un << (7*8+5)));
+            m_PieceBlanche |= ((Un << (7*8+4)) | (Un << (7*8+7)));
+            m_PieceBlanche &= ~((Un << (7*8+6)) | (Un << (7*8+5)));
             m_Plateau[7][4] = m_Plateau[7][6];
             m_Plateau[7][7] = m_Plateau[7][5];
             m_Plateau[7][6] = NULL;
@@ -640,8 +635,8 @@ void Echiquier::BougerRoqueInverse(Coup CoupRoqueAInverser)
         else
         {
             m_CouleurAJouer = Blanc;
-            m_PieceBlanche += ((Un << (7*8+4)) | (Un << (7*8+0)));
-            m_PieceBlanche -= ((Un << (7*8+2)) | (Un << (7*8+3)));
+            m_PieceBlanche |= ((Un << (7*8+4)) | (Un << (7*8+0)));
+            m_PieceBlanche &= ~((Un << (7*8+2)) | (Un << (7*8+3)));
             m_Plateau[7][4] = m_Plateau[7][2];
             m_Plateau[7][0] = m_Plateau[7][3];
             m_Plateau[7][2] = NULL;
@@ -659,8 +654,8 @@ void Echiquier::BougerRoqueInverse(Coup CoupRoqueAInverser)
         if (CoupRoqueAInverser.PetitRoque)
         {
             m_CouleurAJouer = Noir;
-            m_PieceNoire += ((Un << (0*8+4)) | (Un << (0*8+7)));
-            m_PieceNoire -= ((Un << (0*8+6)) | (Un << (0*8+5)));
+            m_PieceNoire |= ((Un << (0*8+4)) | (Un << (0*8+7)));
+            m_PieceNoire &= ~((Un << (0*8+6)) | (Un << (0*8+5)));
             m_Plateau[0][4] = m_Plateau[0][6];
             m_Plateau[0][7] = m_Plateau[0][5];
             m_Plateau[0][6] = NULL;
@@ -675,8 +670,8 @@ void Echiquier::BougerRoqueInverse(Coup CoupRoqueAInverser)
         else
         {
             m_CouleurAJouer = Noir;
-            m_PieceNoire += ((Un << (0*8+4)) | (Un << (0*8+0)));
-            m_PieceNoire -= ((Un << (0*8+2)) | (Un << (0*8+3)));
+            m_PieceNoire |= ((Un << (0*8+4)) | (Un << (0*8+0)));
+            m_PieceNoire &= ~((Un << (0*8+2)) | (Un << (0*8+3)));
             m_Plateau[0][4] = m_Plateau[0][2];
             m_Plateau[0][0] = m_Plateau[0][3];
             m_Plateau[0][2] = NULL;
@@ -759,12 +754,9 @@ void Echiquier::CreationFichierDebugage()
         EcritureFichierUll(m_DeplacementBlanc, NomFichierBlanc, "DeplacementBlanc");
         EcritureFichierUll(m_DeplacementNoir, NomFichierBlanc, "DeplacementNoir");
 
-        DeplacementRoi =  m_ListePiece[0]->MouvementPossible(m_PieceNoire, m_PieceBlanche);
-        EcritureFichierUll(DeplacementRoi & ~(DeplacementRoi & m_DeplacementNoir), NomFichierBlanc, "Roi");
-
-        for(int i=1; i<16; i++)
+        for(int i=0; i<16; i++)
         {
-            EcritureFichierUll(m_ListePiece[i]->MouvementPossible(m_PieceNoire, m_PieceBlanche), NomFichierBlanc, ConversionIntString(i));
+            EcritureFichierUll(m_DeplacementPiece[i], NomFichierBlanc, ConversionIntString(i));
         }
     }
     else
@@ -777,12 +769,9 @@ void Echiquier::CreationFichierDebugage()
         EcritureFichierUll(m_DeplacementBlanc, NomFichierNoir, "DeplacementBlanc");
         EcritureFichierUll(m_DeplacementNoir, NomFichierNoir, "DeplacementNoir");
 
-        DeplacementRoi =  m_ListePiece[16]->MouvementPossible(m_PieceBlanche, m_PieceNoire);
-        EcritureFichierUll(DeplacementRoi & ~(DeplacementRoi & m_DeplacementBlanc), NomFichierNoir, "Roi");
-
         for(int i=17; i<32; i++)
         {
-            EcritureFichierUll(m_ListePiece[i]->MouvementPossible(m_PieceBlanche, m_PieceNoire), NomFichierNoir, ConversionIntString(i));
+            EcritureFichierUll(m_DeplacementPiece[i], NomFichierNoir, ConversionIntString(i));
         }
     }
 

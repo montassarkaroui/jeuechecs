@@ -45,7 +45,7 @@ CoupEval Elagage::AlgorithmeElagage(Echiquier& Plateau, Couleur CouleurAJouer, i
                 CoupAJouer.Evaluation = CoupAJouerTemporaire.Evaluation;
                 CoupAJouer.CoupAJouer = ListeCoup[i];
 
-                if (Profondeur == 0) { cout << CoupAJouer.Evaluation;}
+                //if (Profondeur == 0) { cout << CoupAJouer.Evaluation;}
 
                 if (CoupAJouer.Evaluation > Alpha)
                 {
