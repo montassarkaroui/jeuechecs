@@ -21,12 +21,14 @@ int main ()
 
     bool Status;
     Test.Affichage();
-    while(!Test.GetFin())
+
+    int i = 0;
+    while(!Test.GetFin() && i<1000)
     {
         do
         {
             Test.CreationFichierDebugage();
-            Status = Test.BougerTotal(Adrien.TrouverCoupAJouer(Test, Test.GetCouleurAJouer()));
+            Status = Test.BougerTotal(Maxime.TrouverCoupAJouer(Test, Test.GetCouleurAJouer()));
         }
         while(!Status);
         if (!Test.GetFin())
@@ -34,13 +36,14 @@ int main ()
             do
             {
                 Test.CreationFichierDebugage();
-                Status = Test.BougerTotal(Nicolas.TrouverCoupAJouer(Test, Test.GetCouleurAJouer()));
+                Status = Test.BougerTotal(Maxime.TrouverCoupAJouer(Test, Test.GetCouleurAJouer()));
             }
             while(!Status);
         }
+        i += 1;
     }
 
-    cout << "C'est la fin" << endl;
-    sleep(5);
+//    cout << "C'est la fin" << endl;
+//    sleep(5);
     return 0;
 }

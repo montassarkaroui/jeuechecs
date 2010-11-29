@@ -31,18 +31,6 @@ void UllVersTableau(ull Ull,  int *Tableau)
         }
         else { Tableau[i] = 0; }
     }
-//    ull Actuelle, Res;
-//    for(int i=63; i>=0; i--)
-//    {
-//            Actuelle = pow(2,i);
-//            Res = Ull/Actuelle;
-//            if(Res!=0)
-//            {
-//                Ull -= Actuelle;
-//            }
-//            Tableau[i] = Res;
-//    }
-
 }
 
 void AffichageUll(unsigned long long int Ull)
@@ -67,16 +55,20 @@ void ConversionUllCoup(vector<Coup> &ListeCoup, ull Masque, Position PositionDeL
 {
     ull Un = 1;
     Coup Case;
-    for (int i=63; i>=0; i--)
+    if (Masque)
     {
-        if ((Un << i) & Masque)
+        for (int i=63; i>=0; i--)
         {
-            Case.Depart = PositionDeLaPiece;
-            Case.Arrive.Rangee = i/8;
-            Case.Arrive.Colonne = i%8;
-            Case.Roque = false;
-            ListeCoup.push_back(Case);
-            Masque &= ~(Un << i);
+            if ((Un << i) & Masque)
+            {
+                Case.Depart = PositionDeLaPiece;
+                Case.Arrive.Rangee = i/8;
+                Case.Arrive.Colonne = i%8;
+                Case.Roque = false;
+                ListeCoup.push_back(Case);
+                Masque &= ~(Un << i);
+            }
+            if (!Masque) { break; }
         }
     }
 }

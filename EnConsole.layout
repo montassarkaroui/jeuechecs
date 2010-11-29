@@ -8,7 +8,7 @@
 		<Cursor position="195" topLine="0" />
 	</File>
 	<File name="Cavalier.cpp" open="1" top="0" tabpos="20">
-		<Cursor position="275" topLine="0" />
+		<Cursor position="1827" topLine="23" />
 	</File>
 	<File name="Cavalier.h" open="1" top="0" tabpos="19">
 		<Cursor position="223" topLine="0" />
@@ -20,7 +20,7 @@
 		<Cursor position="207" topLine="0" />
 	</File>
 	<File name="Elagage.cpp" open="1" top="0" tabpos="28">
-		<Cursor position="1985" topLine="35" />
+		<Cursor position="615" topLine="0" />
 	</File>
 	<File name="Elagage.h" open="1" top="0" tabpos="27">
 		<Cursor position="349" topLine="0" />
@@ -32,7 +32,7 @@
 		<Cursor position="87" topLine="0" />
 	</File>
 	<File name="Fou.cpp" open="1" top="0" tabpos="18">
-		<Cursor position="1718" topLine="42" />
+		<Cursor position="1718" topLine="27" />
 	</File>
 	<File name="Fou.h" open="1" top="0" tabpos="17">
 		<Cursor position="203" topLine="0" />
@@ -47,31 +47,31 @@
 		<Cursor position="110" topLine="0" />
 	</File>
 	<File name="Pion.cpp" open="1" top="0" tabpos="22">
-		<Cursor position="215" topLine="3" />
+		<Cursor position="215" topLine="28" />
 	</File>
 	<File name="Pion.h" open="1" top="0" tabpos="21">
 		<Cursor position="74" topLine="0" />
 	</File>
 	<File name="Roi.cpp" open="1" top="0" tabpos="12">
-		<Cursor position="265" topLine="0" />
+		<Cursor position="1260" topLine="18" />
 	</File>
 	<File name="Roi.h" open="1" top="0" tabpos="11">
 		<Cursor position="98" topLine="0" />
 	</File>
 	<File name="Tour.cpp" open="1" top="0" tabpos="16">
-		<Cursor position="213" topLine="0" />
+		<Cursor position="813" topLine="23" />
 	</File>
 	<File name="Tour.h" open="1" top="0" tabpos="15">
 		<Cursor position="207" topLine="0" />
 	</File>
-	<File name="echiquier.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="24686" topLine="705" />
+	<File name="echiquier.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="6816" topLine="237" />
 	</File>
 	<File name="echiquier.h" open="1" top="0" tabpos="2">
-		<Cursor position="1354" topLine="41" />
+		<Cursor position="315" topLine="11" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="876" topLine="18" />
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="468" topLine="0" />
 	</File>
 	<File name="piece.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="534" topLine="31" />
@@ -80,9 +80,9 @@
 		<Cursor position="477" topLine="11" />
 	</File>
 	<File name="structure.cpp" open="1" top="0" tabpos="10">
-		<Cursor position="1071" topLine="28" />
+		<Cursor position="1088" topLine="51" />
 	</File>
 	<File name="structure.h" open="1" top="0" tabpos="9">
-		<Cursor position="202" topLine="0" />
+		<Cursor position="905" topLine="39" />
 	</File>
 </CodeBlocks_layout_file>

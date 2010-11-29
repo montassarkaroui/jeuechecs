@@ -58,7 +58,7 @@
 	"piece.h"
 	"structure.h"
 
-1290870026 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/echiquier.cpp
+1290902395 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/echiquier.cpp
 	"structure.h"
 	"piece.h"
 	"echiquier.h"
@@ -76,12 +76,12 @@
 	<fstream>
 	<string>
 
-1290865845 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/echiquier.h
+1290901842 /home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/echiquier.h
 	"piece.h"
 	"Roi.h"
 	<vector>
 
-1290869997 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/main.cpp
+1291054051 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/main.cpp
 	<iostream>
 	<math.h>
 	"structure.h"
@@ -99,7 +99,7 @@
 	"structure.h"
 	<string>
 
-1290869724 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/structure.cpp
+1291052207 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/structure.cpp
 	"structure.h"
 	<iostream>
 	<math.h>
@@ -160,7 +160,7 @@
 	"echiquier.h"
 	"piece.h"
 
-1290812293 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Elagage.cpp
+1290904179 source:/home/adrien/Documents/Programmation/Programme échecs/EnConsole/EnConsole/Elagage.cpp
 	"echiquier.h"
 	"structure.h"
 	"Elagage.h"
