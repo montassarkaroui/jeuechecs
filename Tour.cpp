@@ -26,31 +26,40 @@ ull Tour::MouvementPossible(ull PieceAdverse, ull PieceAmi)
     ull PositionActuelle = 1;
     ull PositionAnalyse;
     ull Un = 1;
+    int NombreDeCas;
     PositionActuelle <<= (m_Position.Rangee*8 + m_Position.Colonne);
-    for(int i=m_Position.Rangee+1; i<8; i++)
+    PositionAnalyse = PositionActuelle;
+    NombreDeCas = 7-m_Position.Rangee;
+    for(int i=0; i<NombreDeCas; i++)
     {
-        PositionAnalyse = Un << (i*8+m_Position.Colonne);
+        PositionAnalyse <<= 8;
         if ((PositionAnalyse & PieceAmi) != 0) break;
         MasqueMouvementPossible |= PositionAnalyse;
         if ((PositionAnalyse & PieceAdverse) != 0) break;
     }
-    for(int i=m_Position.Rangee-1; i>=0; i--)
+    PositionAnalyse = PositionActuelle;
+    NombreDeCas = m_Position.Rangee;
+    for(int i=NombreDeCas; i>0; i--)
     {
-        PositionAnalyse = Un << (i*8+m_Position.Colonne);
+        PositionAnalyse >>= 8;
         if ((PositionAnalyse & PieceAmi) != 0) break;
         MasqueMouvementPossible |= PositionAnalyse;
         if ((PositionAnalyse & PieceAdverse) != 0) break;
     }
-    for(int j=m_Position.Colonne+1; j<8; j++)
+    PositionAnalyse = PositionActuelle;
+    NombreDeCas = 7-m_Position.Colonne;
+    for(int i=0; i<NombreDeCas; i++)
     {
-        PositionAnalyse = Un << (m_Position.Rangee*8+j);
+        PositionAnalyse <<= 1;
         if ((PositionAnalyse & PieceAmi) != 0) break;
         MasqueMouvementPossible |= PositionAnalyse;
         if ((PositionAnalyse & PieceAdverse) != 0) break;
     }
-    for(int j=m_Position.Colonne-1; j>=0; j--)
+    PositionAnalyse = PositionActuelle;
+    NombreDeCas = m_Position.Colonne;
+    for(int i=NombreDeCas; i>0; i--)
     {
-        PositionAnalyse = Un << (m_Position.Rangee*8+j);
+        PositionAnalyse >>=1;
         if ((PositionAnalyse & PieceAmi) != 0) break;
         MasqueMouvementPossible |= PositionAnalyse;
         if ((PositionAnalyse & PieceAdverse) != 0) break;
