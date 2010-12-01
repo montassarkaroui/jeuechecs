@@ -8,6 +8,16 @@
 #include <sstream>
 using namespace std;
 
+int min(int a, usi b)
+{
+  return (a<b)?a:b;
+}
+
+int min(usi a, int b)
+{
+  return (a<b)?a:b;
+}
+
 std::string ConversionIntString( int i )
 {
     std::ostringstream oss;

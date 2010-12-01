@@ -5,7 +5,7 @@
 
 double EvaluationPosition(Echiquier Plateau)
 {
-    double Evaluation;
+    double Evaluation=0;
     if (Plateau.GetEchecEtMat())
     {
         if (Plateau.GetCouleurAJouer() == Blanc) { return ValeurEchetEtMat; }

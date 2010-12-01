@@ -55,7 +55,8 @@ struct CoupEval
     Coup CoupAJouer;
     double Evaluation;
 };
-
+int min(int a, usi b);
+int min(usi a, int b);
 std::string ConversionIntString(int i);
 void UllVersTableau(unsigned long long int Ull, int Tableau[]);
 void AffichageUll(unsigned long long int ull);

@@ -31,19 +31,24 @@ ull Cavalier::MouvementPossible(ull PieceAdverse, ull PieceAmi)
     switch (m_Position.Colonne)
     {
         case 0:
-            MasqueMouvementPossible |= PositionActuelle << (2*8+1) | PositionActuelle << (1*8+2) | PositionActuelle >> (2*8-1) | PositionActuelle >> (1*8-2);
+            //MasqueMouvementPossible |= PositionActuelle << (2*8+1) | PositionActuelle << (1*8+2) | PositionActuelle >> (2*8-1) | PositionActuelle >> (1*8-2);
+            MasqueMouvementPossible |= PositionActuelle << (17) | PositionActuelle << (10) | PositionActuelle >> (15) | PositionActuelle >> (6);
             break;
         case 1:
-            MasqueMouvementPossible |= PositionActuelle << (2*8+1) | PositionActuelle << (1*8+2) | PositionActuelle << (2*8-1) | PositionActuelle >> (2*8-1) | PositionActuelle >> (1*8-2) | PositionActuelle >> (2*8+1);
+            //MasqueMouvementPossible |= PositionActuelle << (2*8+1) | PositionActuelle << (1*8+2) | PositionActuelle << (2*8-1) | PositionActuelle >> (2*8-1) | PositionActuelle >> (1*8-2) | PositionActuelle >> (2*8+1);
+            MasqueMouvementPossible |= PositionActuelle << (17) | PositionActuelle << (10) | PositionActuelle << (15) | PositionActuelle >> (15) | PositionActuelle >> (6) | PositionActuelle >> (17);
             break;
         case 6:
-            MasqueMouvementPossible |= PositionActuelle << (1*8-2) | PositionActuelle << (2*8-1) | PositionActuelle << (2*8+1) | PositionActuelle >> (2*8+1) | PositionActuelle >> (1*8+2) | PositionActuelle >> (2*8-1);
+            //MasqueMouvementPossible |= PositionActuelle << (1*8-2) | PositionActuelle << (2*8-1) | PositionActuelle << (2*8+1) | PositionActuelle >> (2*8+1) | PositionActuelle >> (1*8+2) | PositionActuelle >> (2*8-1);
+            MasqueMouvementPossible |= PositionActuelle << (6) | PositionActuelle << (15) | PositionActuelle << (17) | PositionActuelle >> (17) | PositionActuelle >> (10) | PositionActuelle >> (15);
             break;
         case 7:
-            MasqueMouvementPossible |= PositionActuelle << (1*8-2) | PositionActuelle << (2*8-1) | PositionActuelle >> (2*8+1) | PositionActuelle >> (1*8+2);
+            //MasqueMouvementPossible |= PositionActuelle << (1*8-2) | PositionActuelle << (2*8-1) | PositionActuelle >> (2*8+1) | PositionActuelle >> (1*8+2);
+            MasqueMouvementPossible |= PositionActuelle << (6) | PositionActuelle << (15) | PositionActuelle >> (17) | PositionActuelle >> (10);
             break;
         default:
-            MasqueMouvementPossible |= PositionActuelle << (2*8+1) | PositionActuelle << (1*8+2) | PositionActuelle << (2*8-1) | PositionActuelle << (1*8-2) | PositionActuelle >> (2*8+1) | PositionActuelle >> (1*8+2) | PositionActuelle >> (2*8-1) | PositionActuelle >> (1*8-2);
+            //MasqueMouvementPossible |= PositionActuelle << (2*8+1) | PositionActuelle << (1*8+2) | PositionActuelle << (2*8-1) | PositionActuelle << (1*8-2) | PositionActuelle >> (2*8+1) | PositionActuelle >> (1*8+2) | PositionActuelle >> (2*8-1) | PositionActuelle >> (1*8-2);
+            MasqueMouvementPossible |= PositionActuelle << (17) | PositionActuelle << (10) | PositionActuelle << (15) | PositionActuelle << (6) | PositionActuelle >> (17) | PositionActuelle >> (10) | PositionActuelle >> (15) | PositionActuelle >> (6);
     }
     return MasqueMouvementPossible & ~(MasqueMouvementPossible & PieceAmi);
 }

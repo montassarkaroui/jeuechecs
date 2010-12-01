@@ -754,7 +754,7 @@ void Echiquier::CreationFichierDebugage()
         EcritureFichierUll(m_DeplacementBlanc, NomFichierBlanc, "DeplacementBlanc");
         EcritureFichierUll(m_DeplacementNoir, NomFichierBlanc, "DeplacementNoir");
 
-        for(int i=0; i<16; i++)
+        for(int i=0; i<32; i++)
         {
             EcritureFichierUll(m_DeplacementPiece[i], NomFichierBlanc, ConversionIntString(i));
         }
@@ -769,7 +769,7 @@ void Echiquier::CreationFichierDebugage()
         EcritureFichierUll(m_DeplacementBlanc, NomFichierNoir, "DeplacementBlanc");
         EcritureFichierUll(m_DeplacementNoir, NomFichierNoir, "DeplacementNoir");
 
-        for(int i=17; i<32; i++)
+        for(int i=0; i<32; i++)
         {
             EcritureFichierUll(m_DeplacementPiece[i], NomFichierNoir, ConversionIntString(i));
         }

@@ -64,14 +64,14 @@
 	<File name="Tour.h" open="1" top="0" tabpos="15">
 		<Cursor position="207" topLine="0" />
 	</File>
-	<File name="echiquier.cpp" open="1" top="1" tabpos="3">
-		<Cursor position="6816" topLine="237" />
+	<File name="echiquier.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="13189" topLine="388" />
 	</File>
 	<File name="echiquier.h" open="1" top="0" tabpos="2">
 		<Cursor position="315" topLine="11" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="468" topLine="0" />
+	<File name="main.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="472" topLine="22" />
 	</File>
 	<File name="piece.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="534" topLine="31" />
@@ -80,9 +80,9 @@
 		<Cursor position="477" topLine="11" />
 	</File>
 	<File name="structure.cpp" open="1" top="0" tabpos="10">
-		<Cursor position="1088" topLine="51" />
+		<Cursor position="1048" topLine="47" />
 	</File>
 	<File name="structure.h" open="1" top="0" tabpos="9">
-		<Cursor position="905" topLine="39" />
+		<Cursor position="901" topLine="39" />
 	</File>
 </CodeBlocks_layout_file>
